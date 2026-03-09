@@ -12,3 +12,7 @@ Route::get('/test', function () {
 });
 
 Route::post('/user_registration', [\App\Http\Controllers\UserController::class, 'user_registration']);
+
+Route::get('/user/{id}',[\App\Http\Controllers\UserController::class, 'getUserById']);
+
+Route::get('rolelist', [\App\Http\Controllers\RoleController::class, 'index']);

@@ -42,4 +42,13 @@ class UserController extends Controller
         return response()->json(['message' => 'User registered successfully'], 201);
 
     }
+
+    public function getUserById($id)
+    {
+        $user = \App\Models\User::with('profile')->find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        return response()->json($user);
+    }
 }
