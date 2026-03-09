@@ -97,6 +97,28 @@ Route::delete('/product/suppliers/{id}', function($id){
     return response()->json($response->json(), $response->status());
 });
 
+Route::get('/product/products', function(){
+    return Http::get('http://localhost:8002/api/products')->json();
+});
+
+Route::get('/product/products/{id}', function($id){
+    return Http::get('http://localhost:8002/api/products/'.$id)->json();
+});
+
+Route::post('/product/products', function(){
+    $response = Http::post('http://localhost:8002/api/products', request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
+Route::put('/product/products/{id}', function($id){
+    $response = Http::put('http://localhost:8002/api/products/'.$id, request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
+Route::delete('/product/products/{id}', function($id){
+    $response = Http::delete('http://localhost:8002/api/products/'.$id);
+    return response()->json($response->json(), $response->status());
+});
 // ------- // Product Service -------
 
 Route::get('/cart/test', function(){
