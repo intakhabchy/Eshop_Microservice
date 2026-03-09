@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
@@ -25,9 +26,78 @@ Route::get('/users/rolelist', function(){
     return Http::get('http://localhost:8001/api/rolelist')->json();
 });
 
-Route::get('/product/test', function(){
-    return Http::get('http://localhost:8002/api/test')->json();
+
+// ------- Product Service -------
+Route::get('/product/brands', function(){
+    return Http::get('http://localhost:8002/api/brands')->json();
 });
+
+Route::get('/product/brands/{id}', function($id){
+    return Http::get('http://localhost:8002/api/brands/'.$id)->json();
+});
+
+Route::post('/product/brands', function(){
+    $response = Http::post('http://localhost:8002/api/brands', request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
+Route::put('/product/brands/{id}', function($id){
+    $response = Http::put('http://localhost:8002/api/brands/'.$id, request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
+Route::delete('/product/brands/{id}', function($id){
+    $response = Http::delete('http://localhost:8002/api/brands/'.$id);
+    return response()->json($response->json(), $response->status());
+});
+
+Route::get('/product/categories', function(){
+    return Http::get('http://localhost:8002/api/categories')->json();
+});
+
+Route::get('/product/categories/{id}', function($id){
+    return Http::get('http://localhost:8002/api/categories/'.$id)->json();
+});
+
+Route::post('/product/categories', function(){
+    $response = Http::post('http://localhost:8002/api/categories', request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
+Route::put('/product/categories/{id}', function($id){
+    $response = Http::put('http://localhost:8002/api/categories/'.$id, request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
+Route::delete('/product/categories/{id}', function($id){
+    $response = Http::delete('http://localhost:8002/api/categories/'.$id);
+    return response()->json($response->json(), $response->status());
+});
+
+Route::get('/product/suppliers', function(){
+    return Http::get('http://localhost:8002/api/suppliers')->json();
+});
+
+Route::get('/product/suppliers/{id}', function($id){
+    return Http::get('http://localhost:8002/api/suppliers/'.$id)->json();
+});
+
+Route::post('/product/suppliers', function(){
+    $response = Http::post('http://localhost:8002/api/suppliers', request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
+Route::put('/product/suppliers/{id}', function($id){
+    $response = Http::put('http://localhost:8002/api/suppliers/'.$id, request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
+Route::delete('/product/suppliers/{id}', function($id){
+    $response = Http::delete('http://localhost:8002/api/suppliers/'.$id);
+    return response()->json($response->json(), $response->status());
+});
+
+// ------- // Product Service -------
 
 Route::get('/cart/test', function(){
     return Http::get('http://localhost:8003/api/test')->json();
