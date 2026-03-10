@@ -133,6 +133,11 @@ Route::get('/product/reviews/{id}', function($id){
     return Http::get('http://localhost:8002/api/reviews/'.$id)->json();
 });
 
+Route::post('/product/stock-in', function(){
+    $response = Http::post('http://localhost:8002/api/stock-in', request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
 // ------- // Product Service -------
 
 Route::get('/cart/test', function(){
