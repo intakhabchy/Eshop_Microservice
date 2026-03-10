@@ -138,6 +138,11 @@ Route::post('/product/stock-in', function(){
     return response()->json($response->json(), $response->status());
 });
 
+Route::post('/product/stock-out', function(){
+    $response = Http::post('http://localhost:8002/api/stock-out', request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
 // ------- // Product Service -------
 
 Route::get('/cart/test', function(){
