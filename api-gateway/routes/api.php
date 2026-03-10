@@ -119,6 +119,20 @@ Route::delete('/product/products/{id}', function($id){
     $response = Http::delete('http://localhost:8002/api/products/'.$id);
     return response()->json($response->json(), $response->status());
 });
+
+Route::get('/product/reviews', function(){
+    return Http::get('http://localhost:8002/api/reviews')->json();
+});
+
+Route::post('/product/reviews', function(){
+    $response = Http::post('http://localhost:8002/api/reviews', request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
+Route::get('/product/reviews/{id}', function($id){
+    return Http::get('http://localhost:8002/api/reviews/'.$id)->json();
+});
+
 // ------- // Product Service -------
 
 Route::get('/cart/test', function(){

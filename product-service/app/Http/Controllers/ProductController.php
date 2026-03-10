@@ -23,7 +23,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        return Product::find($id)->with(['brand', 'category']);
+        return Product::with(['brand', 'category'])->find($id);
     }
 
     public function store(Request $request)
