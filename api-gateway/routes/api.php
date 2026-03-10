@@ -150,9 +150,15 @@ Route::post('/product/stock-out', function(){
 
 // ------- // Product Service -------
 
+// ------- Cart Service -------
 Route::get('/cart/test', function(){
     return Http::get('http://localhost:8003/api/test')->json();
 });
+
+
+// ------- // Cart Service -------
+
+
 
 Route::get('/order/test', function(){
     return Http::get('http://localhost:8004/api/test')->json();
