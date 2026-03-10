@@ -4,10 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductDetail;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
+
     public function index()
     {
         return Product::all()->with(['brand', 'category', 'supplier']);
@@ -20,27 +28,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $product = Product::create([
-            'product_name' => $request->input('product_name'),
-            'short_description' => $request->input('short_description'),
-            'price' => $request->input('price'),
-            'discount' => $request->input('discount'),
-            'stock_quantity' => $request->input('stock_quantity'),
-            'category_id' => $request->input('category_id'),
-            'brand_id' => $request->input('brand_id'),
-            'remarks' => $request->input('remarks'),
-        ]);
-
-        $productDetail = $product->detail()->create([
-            'description' => $request->description,
-            'color' => $request->color,
-            'size' => $request->size,
-        ]);
-
-        // Load detail for response
-        $product->load('detail');
-
-        // Return JSON response
+        $product = $this->productService->create($request->all());
         return response()->json($product, 201);
     }
 
