@@ -13,6 +13,11 @@ Route::get('/users/test', function(){
     return Http::get('http://localhost:8001/api/test')->json();
 });
 
+Route::post('/users/login', function(){
+    $response = Http::post('http://localhost:8001/api/login', request()->all());
+    return response()->json($response->json(), $response->status());
+});
+
 Route::post('/users/user_registration', function(){
     $response = Http::post('http://localhost:8001/api/user_registration', request()->all());
     return response()->json($response->json(), $response->status());
