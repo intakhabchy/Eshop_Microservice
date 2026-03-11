@@ -151,10 +151,20 @@ Route::post('/product/stock-out', function(){
 // ------- // Product Service -------
 
 // ------- Cart Service -------
-Route::get('/cart/test', function(){
-    return Http::get('http://localhost:8003/api/test')->json();
+
+Route::post('/cart/add-to-cart', function(){
+    return Http::post('http://localhost:8003/api/add-to-cart', request()->all());
+});
+Route::delete('/cart/delete-cart/{cart_id}', function($cart_id){
+    return Http::delete('http://localhost:8003/api/delete-cart/'.$cart_id);
 });
 
+Route::get('/cart/cart-items/{cart_id}', function($cart_id){
+    return Http::get('http://localhost:8003/api/cart-items/'.$cart_id);
+});
+Route::delete('/cart/delete-cart-item/{cart_item_id}', function($cart_item_id){
+    return Http::delete('http://localhost:8003/api/delete-cart-item/'.$cart_item_id);
+});
 
 // ------- // Cart Service -------
 
