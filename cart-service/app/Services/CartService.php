@@ -54,8 +54,12 @@ class CartService
     public function deleteCart($cartId)
     {
         // delete all data from item and cart table with the cart_id
-        $this->cartItemRepository->deleteCartItemsByCartId($cartId);
-        $this->cartRepository->deleteCart($cartId);
-        return response()->json(['message' => 'Cart deleted successfully']);
+        $deleteCartItem = $this->cartItemRepository->deleteCartItemsByCartId($cartId);
+        $deleteCart = $this->cartRepository->deleteCart($cartId);
+
+        if($deleteCart && $deleteCartItem)
+            return response()->json(['message' => 'Cart deleted successfully']);
+        else
+            return response()->json(['message' => 'Cart deletion failed']);
     }
 }

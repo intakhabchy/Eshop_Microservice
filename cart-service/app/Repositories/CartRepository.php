@@ -21,7 +21,7 @@ class CartRepository
         return Cart::where('user_id', $userId)->where('cart_status', $cartStatus)->latest()->first();
     }
 
-    public function deleteCart($cartId)
+    public function deleteCart($cartId): bool
     {
         return Cart::where('id', $cartId)->delete();
     }

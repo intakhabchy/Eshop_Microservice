@@ -39,7 +39,7 @@ class CartItemRepository
         return CartItem::where('id', $cartItemId)->delete();
     }
 
-    public function deleteCartItemsByCartId($cartId)
+    public function deleteCartItemsByCartId($cartId): bool
     {
         return CartItem::where('cart_id', $cartId)->delete();
     }
