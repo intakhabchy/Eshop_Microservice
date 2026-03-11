@@ -51,17 +51,6 @@ class CartService
         return response()->json(['message' => 'Product added to cart successfully']);
     }
 
-    public function getCartItems($cart_id)
-    {
-        return $this->cartItemRepository->getCartItemsByCartId($cart_id);
-    }
-
-    public function deleteCartItem($cartItemId)
-    {
-        $this->cartItemRepository->deleteCartItemsByCartItemId($cartItemId);
-        return response()->json(['message' => 'Product deleted from cart successfully']);
-    }
-
     public function deleteCart($cartId)
     {
         // delete all data from item and cart table with the cart_id
