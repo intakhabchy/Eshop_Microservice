@@ -26,5 +26,18 @@ class OrderController extends Controller
         $cartId = $order->cart_id;
         $status = "completed";
         $response = Http::put("http://localhost:8003/api/update-cart-status/".$cartId."/".$status);
+
+        // stock out in product service
+        foreach ($request->items as $item) {
+            $payload = [
+                'product_id'   => $item['product_id'],
+                'quantity'     => $item['quantity'],
+                'reference_id' => $order->id
+            ];
+
+            Http::post("http://localhost:8002/api/stock-out", $payload);
+        }
+
+        return response()->json($order, 201);
     }
 }
