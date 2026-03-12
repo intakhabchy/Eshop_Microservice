@@ -15,6 +15,11 @@ class OrderController extends Controller
         $this->orderService = $orderService;
     }
 
+    public function index()
+    {
+        return $this->orderService->getAllOrders();    
+    }
+
     public function store(Request $request)
     {
         $order = $this->orderService->createOrder($request->all());
@@ -39,5 +44,14 @@ class OrderController extends Controller
         }
 
         return response()->json($order, 201);
+    }
+
+    public function show($id)
+    {
+        $order = $this->orderService->getOrderById($id);
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+        return response()->json($order);
     }
 }
