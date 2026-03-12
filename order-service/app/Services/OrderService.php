@@ -36,13 +36,13 @@ class OrderService
         return $this->orderRepository->createOrder($data);
     }
 
-    public function getOrderById($id)
+    public function getOrderById($id, $userId)
     {
-        return $this->orderRepository->getOrderById($id);
+        return $this->orderRepository->getOrderById($id, $userId);
     }
 
-    public function getAllOrders()
+    public function getAllOrders($userId)
     {
-        return $this->orderRepository->getAllOrders();
+        return $this->orderRepository->getAllOrders($userId);
     }
 }

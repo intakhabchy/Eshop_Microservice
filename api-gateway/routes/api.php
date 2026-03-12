@@ -173,12 +173,12 @@ Route::post('/order/orders', function(){
     return Http::post('http://localhost:8004/api/orders', request()->all());
 });
 
-Route::get('/order/orders', function(){
-    return Http::get('http://localhost:8004/api/orders');
+Route::get('/order/orders/{user_id}', function($userId){
+    return Http::get('http://localhost:8004/api/orders/'.$userId);
 });
 
-Route::get('/order/orders/{id}', function($id){
-    return Http::get('http://localhost:8004/api/orders/'.$id);
+Route::get('/order/orders/{id}/{user_id}', function($id,$userId){
+    return Http::get('http://localhost:8004/api/orders/'.$id.'/'.$userId);
 });
 // ------- // Order Service -------
 

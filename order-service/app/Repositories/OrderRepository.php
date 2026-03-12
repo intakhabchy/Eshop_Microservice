@@ -10,14 +10,13 @@ class OrderRepository
         return Order::class::create($data);
     }
 
-    public function getOrderById($id)
+    public function getOrderById($id, $userId)
     {
-        // return Order::class::find($id);
-        return Order::class::with('orderDetails')->find($id);
+        return Order::with('orderDetails')->where('id', $id)->where('user_id', $userId)->first();
     }
 
-    public function getAllOrders()
+    public function getAllOrders($userId)
     {
-        return Order::class::with('orderDetails')->get();
+        return Order::with('orderDetails')->where('user_id', $userId)->get();
     }
 }
