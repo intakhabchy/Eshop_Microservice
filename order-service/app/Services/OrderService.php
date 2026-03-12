@@ -20,7 +20,7 @@ class OrderService
 
         $total_price = 0;
         foreach ($data['items'] as $item) {
-            $total_price = $item['quantity'] * $item['unit_price'];
+            $total_price += $item['quantity'] * $item['unit_price'];
         }
 
         $data['total_price'] = $total_price;
