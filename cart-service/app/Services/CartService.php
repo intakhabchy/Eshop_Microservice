@@ -62,4 +62,9 @@ class CartService
         else
             return response()->json(['message' => 'Cart deletion failed']);
     }
+
+    public function updateCartStatus($cartId, $status): bool
+    {
+        return $this->cartRepository->updateCartStatus($cartId, $status);
+    }
 }

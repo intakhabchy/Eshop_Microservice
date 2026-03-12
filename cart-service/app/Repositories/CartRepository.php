@@ -25,4 +25,9 @@ class CartRepository
     {
         return Cart::where('id', $cartId)->delete();
     }
+
+    public function updateCartStatus($cartId, $status): bool
+    {
+        return Cart::where('id', $cartId)->update(['cart_status' => $status]);
+    }
 }

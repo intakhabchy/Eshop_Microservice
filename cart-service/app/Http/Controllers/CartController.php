@@ -23,4 +23,9 @@ class CartController extends Controller
     {
         return $this->cartService->deleteCart($cartId);
     }
+
+    public function updateCartStatus($cartId, $status)
+    {
+        return $this->cartService->updateCartStatus($cartId, $status);
+    }
 }

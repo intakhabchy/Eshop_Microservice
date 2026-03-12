@@ -14,3 +14,4 @@ Route::delete('/delete-cart/{cart_id}', [CartController::class, 'deleteCart']);
 
 Route::get('/cart-items/{cart_id}', [CartItemController::class, 'getCartItems']);
 Route::delete('/delete-cart-item/{cart_item_id}', [CartItemController::class, 'deleteCartItem']);
+Route::put('/update-cart-status/{cart_id}/{status}', [CartController::class, 'updateCartStatus']);

@@ -168,11 +168,14 @@ Route::delete('/cart/delete-cart-item/{cart_item_id}', function($cart_item_id){
 
 // ------- // Cart Service -------
 
-
-
-Route::get('/order/test', function(){
-    return Http::get('http://localhost:8004/api/test')->json();
+// ------- Order Service -------
+Route::post('/order/orders', function(){
+    return Http::post('http://localhost:8004/api/orders', request()->all());
 });
+
+
+// ------- // Order Service -------
+
 
 Route::get('/payment/test', function(){
     return Http::get('http://localhost:8005/api/test')->json();
