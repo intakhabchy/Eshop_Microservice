@@ -2,6 +2,8 @@
 namespace App\Services;
 
 use App\Repositories\PaymentRepository;
+use App\Services\Payment\CashOnDeliveryPayment;
+use App\Services\Payment\SslCommerzPayment;
 
 class PaymentService
 {
@@ -23,8 +25,13 @@ class PaymentService
             'status' => 'pending'
         ]);
 
-        // Replace this simulated success with actual gateway call
-        // Example: SSLCommerz API call, handle response, then update status accordingly
+        // Choose strategy
+        $strategy = $this->getStrategy($data['payment_method_id']);
+
+        // Process payment
+        $status = $strategy->processPayment($data);
+
+        // 4. Update payment status
         $this->paymentRepository->updateStatus($payment->id, 'success');
 
         // Return response
@@ -33,5 +40,20 @@ class PaymentService
             'status' => 'success',
             'message' => 'Payment processed successfully'
         ];
+    }
+
+    public function updatePaymentStatus($paymentId, $status)
+    {
+        return $this->paymentRepository->updateStatus($paymentId, $status);
+    }
+
+    private function getStrategy($paymentMethodId)
+    {
+        // Map IDs to strategy classes (adjust IDs according to your DB)
+        return match ($paymentMethodId) {
+            1 => new SslCommerzPayment(),
+            2 => new CashOnDeliveryPayment(),
+            default => new CashOnDeliveryPayment()
+        };
     }
 }

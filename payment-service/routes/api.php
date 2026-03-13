@@ -9,3 +9,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/initiate', [PaymentController::class,'paymentInitiate']);
+Route::put('/update-status/{id}', [PaymentController::class,'updatePaymentStatus']);

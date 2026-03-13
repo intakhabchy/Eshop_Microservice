@@ -27,4 +27,9 @@ class PaymentController extends Controller
 
         return response()->json($payment, 201);
     }
+
+    public function updatePaymentStatus($id, Request $request)
+    {
+        return $this->paymentService->updatePaymentStatus($id, $request->input('status'));
+    }
 }
