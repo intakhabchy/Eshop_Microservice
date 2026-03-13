@@ -32,12 +32,12 @@ class PaymentService
         $status = $strategy->processPayment($data);
 
         // 4. Update payment status
-        $this->paymentRepository->updateStatus($payment->id, 'success');
+        $this->paymentRepository->updateStatus($payment->id, $status);
 
         // Return response
         return [
             'payment_id' => $payment->id,
-            'status' => 'success',
+            'status' => $status,
             'message' => 'Payment processed successfully'
         ];
     }
