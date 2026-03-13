@@ -182,10 +182,14 @@ Route::get('/order/orders/{id}/{user_id}', function($id,$userId){
 });
 // ------- // Order Service -------
 
+// ------- Payment Service -------
 
-Route::get('/payment/test', function(){
-    return Http::get('http://localhost:8005/api/test')->json();
+Route::post('/payment/initiate', function(){
+    return Http::post('http://localhost:8005/api/initiate')->json();
 });
+
+// ------- // Payment Service -------
+
 
 Route::get('/notification/test', function(){
     return Http::get('http://localhost:8006/api/test')->json();

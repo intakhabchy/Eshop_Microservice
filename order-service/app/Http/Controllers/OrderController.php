@@ -27,6 +27,10 @@ class OrderController extends Controller
         $orderDetailController = new OrderDetailController(app()->make('App\Services\OrderDetailService'));
         $orderDetailController->store($request,$order->id);
 
+        // 1. Call Payment Service → verify success
+        // 2. On success: update cart status to completed
+        // 3. Stock-out products
+
         // update cart with completed
         $cartId = $order->cart_id;
         $status = "completed";
