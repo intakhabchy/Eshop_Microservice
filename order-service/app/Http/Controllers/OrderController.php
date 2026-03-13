@@ -27,24 +27,32 @@ class OrderController extends Controller
         $orderDetailController = new OrderDetailController(app()->make('App\Services\OrderDetailService'));
         $orderDetailController->store($request,$order->id);
 
-        // 1. Call Payment Service → verify success
-        // 2. On success: update cart status to completed
-        // 3. Stock-out products
+        // Call Payment Service
+        $paymentResponse = Http::post("http://localhost:8005/api/payment/initiate", [
+            'order_id' => $order->id,
+            'user_id' => $request->user_id,
+            'payment_method_id' => $request->payment_method_id,
+            'amount' => $request->total_amount
+        ]);
 
-        // update cart with completed
-        $cartId = $order->cart_id;
-        $status = "completed";
-        $response = Http::put("http://localhost:8003/api/update-cart-status/".$cartId."/".$status);
+        // Handle Payment Response, if success then update cart and stock-out products
+        if ($paymentResponse['status'] === 'success') {
 
-        // stock out in product service
-        foreach ($request->items as $item) {
-            $payload = [
-                'product_id'   => $item['product_id'],
-                'quantity'     => $item['quantity'],
-                'reference_id' => $order->id
-            ];
+            $cartId = $order->cart_id;
+            $status = "completed";
 
-            Http::post("http://localhost:8002/api/stock-out", $payload);
+            // update cart to completed
+            Http::put("http://localhost:8003/api/update-cart-status/".$cartId."/".$status);
+
+            // stock-out products
+            foreach ($request->items as $item) {
+                $payload = [
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                    'reference_id' => $order->id
+                ];
+                Http::post("http://localhost:8002/api/stock-out", $payload);
+            }
         }
 
         return response()->json($order, 201);
