@@ -28,31 +28,24 @@ class OrderController extends Controller
         $orderDetailController->store($request,$order->id);
 
         // Call Payment Service
-        $paymentResponse = Http::post("http://localhost:8005/api/payment/initiate", [
-            'order_id' => $order->id,
-            'user_id' => $request->user_id,
-            'payment_method_id' => $request->payment_method_id,
-            'amount' => $request->total_amount
-        ]);
+        $orderId = $order->id;
+        $total = $this->orderService->calculateTotal($request->items);
+        $vat = $this->orderService->calculateVat($total);
+        $amount_payable = $total+$vat;
+
+        $paymentResponse = $this->orderService->submitPayment($orderId, $request->user_id, $request->payment_method_id, $amount_payable);
 
         // Handle Payment Response, if success then update cart and stock-out products
-        if ($paymentResponse['status'] === 'success') {
+        if (!empty($paymentResponse['status']) && $paymentResponse['status'] === 'success') {
 
             $cartId = $order->cart_id;
             $status = "completed";
 
             // update cart to completed
-            Http::put("http://localhost:8003/api/update-cart-status/".$cartId."/".$status);
+            $this->orderService->updateCartStatus($cartId, $status);
 
             // stock-out products
-            foreach ($request->items as $item) {
-                $payload = [
-                    'product_id' => $item['product_id'],
-                    'quantity' => $item['quantity'],
-                    'reference_id' => $order->id
-                ];
-                Http::post("http://localhost:8002/api/stock-out", $payload);
-            }
+            $this->orderService->stockOutProducts($request, $orderId);
         }
 
         return response()->json($order, 201);

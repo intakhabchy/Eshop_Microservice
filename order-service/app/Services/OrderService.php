@@ -18,14 +18,12 @@ class OrderService
         $userId = $data['user_id'];
         $cartId = $data['cart_id'];
 
-        $total_price = 0;
-        foreach ($data['items'] as $item) {
-            $total_price += $item['quantity'] * $item['unit_price'];
-        }
+        $total_price = $this->calculateTotal($data['items']);
+        $vat = $this->calculateVat($total_price);
 
         $data['total_price'] = $total_price;
-        $data['vat'] = $total_price * 0.15;
-        $data['payable_price'] = $total_price + $data['vat'];
+        $data['vat'] = $vat;
+        $data['payable_price'] = $total_price + $vat;
         $data['tracking_id'] = 'TRK' . rand(100000, 999999);
 
         $response = Http::get("http://localhost:8001/api/user/".$userId);
@@ -44,5 +42,46 @@ class OrderService
     public function getAllOrders($userId)
     {
         return $this->orderRepository->getAllOrders($userId);
+    }
+
+    public function calculateTotal($items)
+    {
+        $total = 0;
+        foreach ($items as $item) {
+            $total += $item['quantity'] * $item['unit_price'];
+        }
+        return $total;
+    }
+
+    public function calculateVat($total)
+    {
+        return $total * 0.15;
+    }
+
+    public function submitPayment($orderId, $userId, $paymentMethodId, $payableAmount)
+    {
+        return Http::post("http://localhost:8005/api/initiate", [
+            'order_id' => $orderId,
+            'user_id' => $userId,
+            'payment_method_id' => $paymentMethodId,
+            'amount' => $payableAmount
+        ])->json();
+    }
+
+    public function updateCartStatus($cartId, $status)
+    {
+        return Http::put("http://localhost:8003/api/update-cart-status/".$cartId."/".$status);
+    }
+
+    public function stockOutProducts($request, $orderId)
+    {
+        foreach ($request->items as $item) {
+            $payload = [
+                'product_id' => $item['product_id'],
+                'quantity' => $item['quantity'],
+                'reference_id' => $orderId
+            ];
+            Http::post("http://localhost:8002/api/stock-out", $payload);
+        }
     }
 }
