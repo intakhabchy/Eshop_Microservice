@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Repositories\PaymentRepository;
 use App\Services\Payment\CashOnDeliveryPayment;
 use App\Services\Payment\SslCommerzPayment;
+use Illuminate\Support\Facades\Http;
 
 class PaymentService
 {
@@ -58,5 +59,28 @@ class PaymentService
             2 => new CashOnDeliveryPayment(),
             default => new CashOnDeliveryPayment()
         };
+    }
+
+    public function completePayment($data)
+    {
+        $this->paymentRepository->updateStatus($data['payment_id'], $data['status']);
+
+        $payment = $this->paymentRepository->getById($data['payment_id']);
+
+        if ($data['status'] === 'success') {
+
+            $orderId = $payment->order_id;
+
+            $response = Http::put("http://localhost:8004/api/update-payment-status/".$orderId, [
+                'payment_status' => 'paid'
+            ]);
+
+        }
+
+        return [
+            'payment_id' => $payment->id,
+            'status' => $data['status'],
+            'message' => 'Payment completed'
+        ];
     }
 }

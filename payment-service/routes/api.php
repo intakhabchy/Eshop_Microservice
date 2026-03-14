@@ -10,3 +10,4 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/initiate', [PaymentController::class,'paymentInitiate']);
 Route::put('/update-status/{id}', [PaymentController::class,'updatePaymentStatus']);
+Route::post('/complete', [PaymentController::class, 'completePayment']);

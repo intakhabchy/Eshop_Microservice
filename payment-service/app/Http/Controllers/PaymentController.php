@@ -32,4 +32,16 @@ class PaymentController extends Controller
     {
         return $this->paymentService->updatePaymentStatus($id, $request->input('status'));
     }
+
+    public function completePayment(Request $request)
+    {
+        $data = $request->validate([
+            'payment_id' => 'required|integer',
+            'status' => 'required|string'
+        ]);
+
+        $result = $this->paymentService->completePayment($data);
+
+        return response()->json($result);
+    }
 }

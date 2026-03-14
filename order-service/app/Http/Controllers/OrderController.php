@@ -33,4 +33,9 @@ class OrderController extends Controller
         }
         return response()->json($order);
     }
+
+    public function updatePaymentStatus($id, Request $request)
+    {
+        return $this->orderService->updateOrderPaymentStatus($id, $request->payment_status);
+    }
 }

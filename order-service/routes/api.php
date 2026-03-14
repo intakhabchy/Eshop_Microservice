@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
 use Illuminate\Http\Request;
@@ -12,3 +13,4 @@ Route::get('/user', function (Request $request) {
 Route::post('/orders', [OrderController::class, 'store']);
 Route::get('/orders/{user_id}', [OrderController::class, 'index']);
 Route::get('/orders/{id}/{user_id}', [OrderController::class, 'show']);
+Route::put('/update-payment-status/{id}', [OrderController::class, 'updatePaymentStatus']);
