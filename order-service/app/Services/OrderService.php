@@ -13,6 +13,37 @@ class OrderService
         $this->orderRepository = $orderRepository;
     }
 
+    public function store($request)
+    {
+        $order = $this->createOrder($request->all());
+
+        $orderDetailService = new OrderDetailService(app()->make('App\Repositories\OrderDetailRepository'));
+        $orderDetailService->createOrderDetail($request,$order->id);
+
+        // Call Payment Service
+        $orderId = $order->id;
+        $total = $this->calculateTotal($request->items);
+        $vat = $this->calculateVat($total);
+        $amount_payable = $total+$vat;
+
+        $paymentResponse = $this->submitPayment($orderId, $request->user_id, $request->payment_method_id, $amount_payable);
+
+        // Handle Payment Response, if success then update cart and stock-out products
+        if (!empty($paymentResponse['status']) && $paymentResponse['status'] === 'success') {
+
+            $cartId = $order->cart_id;
+            $status = "completed";
+
+            // update cart to completed
+            $this->updateCartStatus($cartId, $status);
+
+            // stock-out products
+            $this->stockOutProducts($request, $orderId);
+        }
+
+        return response()->json($order, 201);
+    }
+
     public function createOrder($data)
     {
         $userId = $data['user_id'];
