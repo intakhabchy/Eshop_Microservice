@@ -34,6 +34,9 @@ class OrderService
             $cartId = $order->cart_id;
             $status = "completed";
 
+            // update order payment status
+            $this->updateOrderPaymentStatus($orderId, "paid");
+
             // update cart to completed
             $this->updateCartStatus($cartId, $status);
 
@@ -114,5 +117,10 @@ class OrderService
             ];
             Http::post("http://localhost:8002/api/stock-out", $payload);
         }
+    }
+
+    public function updateOrderPaymentStatus($orderId, $paymentStatus)
+    {
+        return $this->orderRepository->updateOrderPaymentStatus($orderId, $paymentStatus);
     }
 }

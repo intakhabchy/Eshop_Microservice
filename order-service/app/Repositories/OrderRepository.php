@@ -19,4 +19,9 @@ class OrderRepository
     {
         return Order::with('orderDetails')->where('user_id', $userId)->get();
     }
+
+    public function updateOrderPaymentStatus($orderId, $paymentStatus)
+    {
+        return Order::where('id', $orderId)->update(['payment_status' => $paymentStatus]);
+    }
 }
