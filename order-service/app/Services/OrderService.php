@@ -35,7 +35,7 @@ class OrderService
             $status = "completed";
 
             // update order payment status
-            $this->updateOrderPaymentStatus($orderId, "paid");
+            // $this->updateOrderPaymentStatus($orderId, "paid");
 
             // update cart to completed
             $this->updateCartStatus($cartId, $status);

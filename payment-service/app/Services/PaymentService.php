@@ -32,6 +32,10 @@ class PaymentService
         // Process payment
         $status = $strategy->processPayment($data);
 
+        $paymentPayload = ['payment_id' => $payment->id, 'status'=> "paid"];
+
+        $this->completePayment($paymentPayload);
+
         // 4. Update payment status
         $this->paymentRepository->updateStatus($payment->id, $status);
 
