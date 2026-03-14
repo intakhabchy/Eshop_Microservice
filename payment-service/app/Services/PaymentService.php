@@ -32,7 +32,7 @@ class PaymentService
         // Process payment
         $status = $strategy->processPayment($data);
 
-        $paymentPayload = ['payment_id' => $payment->id, 'status'=> "paid"];
+        $paymentPayload = ['payment_id' => $payment->id, 'status'=> "success"];
 
         $this->completePayment($paymentPayload);
 
