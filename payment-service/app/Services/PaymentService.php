@@ -34,10 +34,13 @@ class PaymentService
         // 4. Update payment status
         $this->paymentRepository->updateStatus($payment->id, $status);
 
+        $token = 'PAY' . rand(100000, 999999);
+
         // Return response
         return [
             'payment_id' => $payment->id,
             'status' => $status,
+            'token' => $token,
             'message' => 'Payment processed successfully'
         ];
     }
