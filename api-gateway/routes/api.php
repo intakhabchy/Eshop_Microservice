@@ -185,7 +185,7 @@ Route::get('/order/orders/{id}/{user_id}', function($id,$userId){
 // ------- Payment Service -------
 
 Route::post('/payment/initiate', function(){
-    return Http::post('http://localhost:8005/api/initiate', request()->all())->json();
+    return Http::post('http://localhost:8005/api/initiate', request()->all());
 });
 
 // ------- // Payment Service -------
