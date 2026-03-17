@@ -188,9 +188,16 @@ Route::post('/payment/initiate', function(){
     return Http::post('http://localhost:8005/api/initiate', request()->all());
 });
 
+Route::post('/payment/complete', function(){
+    return Http::post('http://localhost:8005/api/complete', request()->all());
+});
+
 // ------- // Payment Service -------
 
+// ------- Notification Service -------
 
-Route::get('/notification/test', function(){
-    return Http::get('http://localhost:8006/api/test')->json();
+Route::post('/notification/payment-success', function(){
+    return Http::post('http://localhost:8006/api/payment-success', request()->all());
 });
+
+// ------- // Notification Service -------

@@ -79,6 +79,14 @@ class PaymentService
                 'payment_status' => 'paid'
             ]);
 
+            // send notification to the user with notification service
+            Http::post("http://localhost:8006/api/payment-success", [
+                'user_id' => $payment->user_id,
+                'order_id' => $payment->order_id,
+                'type' => "Payment Success",
+                'message' => "Your payment for ".$orderId." is successfull"
+            ]);
+
         }
         else
         {
