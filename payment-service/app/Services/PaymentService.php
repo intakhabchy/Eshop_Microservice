@@ -83,6 +83,7 @@ class PaymentService
             Http::post("http://localhost:8006/api/payment-success", [
                 'user_id' => $payment->user_id,
                 'order_id' => $payment->order_id,
+                "email" => "test@email.com",
                 'type' => "Payment Success",
                 'message' => "Your payment for ".$orderId." is successfull"
             ]);

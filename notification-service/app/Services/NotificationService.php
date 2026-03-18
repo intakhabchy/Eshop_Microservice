@@ -1,7 +1,9 @@
 <?php
 namespace App\Services;
 
+use App\Events\OrderPlaced;
 use App\Jobs\SendNotificationJob;
+use App\Mail\OrderPlacedMail;
 use App\Repositories\NotificationRepository;
 use Illuminate\Support\Facades\Log;
 
@@ -28,11 +30,11 @@ class NotificationService
         if($saved)
         {
             Log::info('Payment success notification sent to user '.$data['user_id']);
-            SendNotificationJob::dispatch($data);       // add queue
+        //    SendNotificationJob::dispatch($data);       // add queue
+            event(new OrderPlaced($data));
             return true;
         }
 
-        return false;
-        
+        return false;  
     }
 }
