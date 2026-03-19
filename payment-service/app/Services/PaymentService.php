@@ -84,6 +84,7 @@ class PaymentService
                 'user_id' => $payment->user_id,
                 'order_id' => $payment->order_id,
                 "email" => "test@email.com",
+                "amount" => 100,
                 'type' => "Payment Success",
                 'message' => "Your payment for ".$orderId." is successfull"
             ]);
