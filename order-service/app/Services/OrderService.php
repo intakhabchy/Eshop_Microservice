@@ -35,7 +35,7 @@ class OrderService
             $status = "completed";
 
             // update order payment status
-            // $this->updateOrderPaymentStatus($orderId, "paid");
+            $this->updateOrderPaymentStatus($orderId, "paid");      // call update status from here to avoid circular dependency
 
             // update cart to completed
             $this->updateCartStatus($cartId, $status);
