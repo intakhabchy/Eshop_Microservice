@@ -75,7 +75,7 @@ class PaymentService
 
             $orderId = $payment->order_id;
 
-            $response = Http::put("http://localhost:8004/api/update-payment-status/".$orderId, [
+            $response = Http::async()->put("http://localhost:8004/api/update-payment-status/".$orderId, [
                 'payment_status' => 'paid'
             ]);
 
