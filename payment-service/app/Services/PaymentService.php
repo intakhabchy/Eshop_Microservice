@@ -5,6 +5,8 @@ use App\Repositories\PaymentRepository;
 use App\Services\Payment\CashOnDeliveryPayment;
 use App\Services\Payment\SslCommerzPayment;
 use Illuminate\Support\Facades\Http;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class PaymentService
 {
@@ -80,15 +82,39 @@ class PaymentService
             // ]);
 
             // send notification to the user with notification service
-            Http::post("http://localhost:8006/api/payment-success", [
+            // Http::post("http://localhost:8006/api/payment-success", [
+            //     'user_id' => $payment->user_id,
+            //     'order_id' => $payment->order_id,
+            //     "email" => "test@email.com",
+            //     "amount" => 100,
+            //     'type' => "Payment Success",
+            //     'message' => "Your payment for ".$orderId." is successfull"
+            // ]);
+
+            $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+            $channel = $connection->channel();
+
+            // declare queue
+            $channel->queue_declare('payment_success', false, true, false, false);
+
+            // prepare message
+            $messageData = [
                 'user_id' => $payment->user_id,
                 'order_id' => $payment->order_id,
                 "email" => "test@email.com",
                 "amount" => 100,
                 'type' => "Payment Success",
                 'message' => "Your payment for ".$orderId." is successfull"
-            ]);
+            ];
 
+            // create message
+            $message = new AMQPMessage(json_encode($messageData));
+
+            // publish message to the queue
+            $channel->basic_publish($message, '', 'payment_success');
+
+            $channel->close();
+            $connection->close();
         }
         else
         {
